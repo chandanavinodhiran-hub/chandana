@@ -127,14 +127,15 @@
 
     .shoes-fan {
       position: relative;
-      width: 700px;
-      height: 500px;
+      width: 800px;
+      max-width: 90vw;
+      height: 460px;
     }
 
     .shoe-card {
       position: absolute;
-      width: 280px;
-      height: 380px;
+      width: 260px;
+      height: 360px;
       background: linear-gradient(160deg, #f0ede8 0%, #e8e4dd 40%, #d8d4cc 100%);
       border-radius: 6px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 8px 20px rgba(0, 0, 0, 0.3);
@@ -152,13 +153,11 @@
                   transform 600ms cubic-bezier(0.0, 0.0, 0.2, 1);
     }
 
-    /* Fan positions — left to right, slight rotation */
+    /* Fan positions — centered, overlapping, fanned out */
     .shoe-card:nth-child(1) {
-      left: 20px;
-      top: 50%;
+      left: 60px;
+      top: 60px;
       transform-origin: bottom center;
-      --fan-rotate: -8deg;
-      --fan-x: 0px;
     }
     .shoe-card:nth-child(1).animate {
       transform: translateY(0px) rotate(-8deg);
@@ -169,26 +168,28 @@
 
     .shoe-card:nth-child(2) {
       left: 50%;
-      top: 45%;
-      margin-left: -140px;
+      top: 20px;
+      margin-left: -130px;
       z-index: 2;
+      transform-origin: bottom center;
     }
     .shoe-card:nth-child(2).animate {
-      transform: translateY(0px) rotate(-2deg);
+      transform: translateY(0px) rotate(-1deg);
     }
     .shoe-card:nth-child(2):not(.animate) {
-      transform: translateY(60px) rotate(-2deg);
+      transform: translateY(60px) rotate(-1deg);
     }
 
     .shoe-card:nth-child(3) {
-      right: 20px;
-      top: 50%;
+      right: 60px;
+      top: 60px;
+      transform-origin: bottom center;
     }
     .shoe-card:nth-child(3).animate {
-      transform: translateY(0px) rotate(5deg);
+      transform: translateY(0px) rotate(6deg);
     }
     .shoe-card:nth-child(3):not(.animate) {
-      transform: translateY(60px) rotate(5deg);
+      transform: translateY(60px) rotate(6deg);
     }
 
     /* Stagger delays: 0ms, 80ms, 160ms */
