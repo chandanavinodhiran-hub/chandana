@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auricel — Terra Collection 01</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #1a1210;
+      color: #f5f0e8;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .page {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Earth texture background ── */
+    .bg-earth {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 55%;
+      background: radial-gradient(ellipse at 50% 40%, #4a3228 0%, #2e1f18 40%, #1a1210 80%);
+      z-index: 0;
+    }
+
+    .bg-earth::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40%;
+      background: linear-gradient(to bottom, transparent, #1a1210);
+    }
+
+    /* ── Header ── */
+    .header {
+      position: relative;
+      z-index: 2;
+      padding: 48px 60px 0;
+    }
+
+    .brand-line {
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #d4c8b8;
+      margin-bottom: 12px;
+    }
+
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(72px, 10vw, 130px);
+      font-weight: 700;
+      line-height: 0.9;
+      color: #f5f0e8;
+      margin-bottom: 20px;
+    }
+
+    .collection-label {
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: #c47a4a;
+      position: relative;
+      padding-top: 16px;
+    }
+
+    .collection-label::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 48px;
+      height: 2px;
+      background: #c47a4a;
+    }
+
+    /* ── Tagline ── */
+    .tagline {
+      position: absolute;
+      top: 56px;
+      right: 60px;
+      text-align: right;
+      z-index: 2;
+    }
+
+    .tagline p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 18px;
+      color: #b8a898;
+      line-height: 1.6;
+    }
+
+    /* ── Shoe cards ── */
+    .shoes-container {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 0 80px;
+    }
+
+    .shoes-fan {
+      position: relative;
+      width: 700px;
+      height: 500px;
+    }
+
+    .shoe-card {
+      position: absolute;
+      width: 280px;
+      height: 380px;
+      background: linear-gradient(160deg, #f0ede8 0%, #e8e4dd 40%, #d8d4cc 100%);
+      border-radius: 6px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 8px 20px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      /* Initial state — hidden below with offset */
+      opacity: 0;
+      transform: translateY(60px);
+      transition: none;
+    }
+
+    .shoe-card.animate {
+      opacity: 1;
+      transform: translateY(0px);
+      transition: opacity 600ms cubic-bezier(0.0, 0.0, 0.2, 1),
+                  transform 600ms cubic-bezier(0.0, 0.0, 0.2, 1);
+    }
+
+    /* Fan positions — left to right, slight rotation */
+    .shoe-card:nth-child(1) {
+      left: 20px;
+      top: 50%;
+      transform-origin: bottom center;
+      --fan-rotate: -8deg;
+      --fan-x: 0px;
+    }
+    .shoe-card:nth-child(1).animate {
+      transform: translateY(0px) rotate(-8deg);
+    }
+    .shoe-card:nth-child(1):not(.animate) {
+      transform: translateY(60px) rotate(-8deg);
+    }
+
+    .shoe-card:nth-child(2) {
+      left: 50%;
+      top: 45%;
+      margin-left: -140px;
+      z-index: 2;
+    }
+    .shoe-card:nth-child(2).animate {
+      transform: translateY(0px) rotate(-2deg);
+    }
+    .shoe-card:nth-child(2):not(.animate) {
+      transform: translateY(60px) rotate(-2deg);
+    }
+
+    .shoe-card:nth-child(3) {
+      right: 20px;
+      top: 50%;
+    }
+    .shoe-card:nth-child(3).animate {
+      transform: translateY(0px) rotate(5deg);
+    }
+    .shoe-card:nth-child(3):not(.animate) {
+      transform: translateY(60px) rotate(5deg);
+    }
+
+    /* Stagger delays: 0ms, 80ms, 160ms */
+    .shoe-card:nth-child(1).animate { transition-delay: 0ms; }
+    .shoe-card:nth-child(2).animate { transition-delay: 80ms; }
+    .shoe-card:nth-child(3).animate { transition-delay: 160ms; }
+
+    /* Shoe illustration inside card */
+    .shoe-card .shoe-visual {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shoe-card .shoe-visual svg {
+      width: 90%;
+      height: auto;
+      transform: rotate(-12deg);
+    }
+
+    /* Drop shadow beneath cards */
+    .shoes-shadow {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 40px;
+      background: radial-gradient(ellipse, rgba(0,0,0,0.35) 0%, transparent 70%);
+      z-index: 0;
+    }
+
+    /* ── Colorway bar ── */
+    .colorways {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 32px 60px 48px;
+    }
+
+    .colorway-name {
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #7a6e62;
+    }
+
+    .colorway-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #6a5e52;
+      margin: 0 36px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 800px) {
+      .header { padding: 32px 28px 0; }
+      .tagline { position: relative; top: auto; right: auto; text-align: left; padding: 16px 28px 0; }
+      .shoes-fan { width: 100%; max-width: 500px; height: 380px; }
+      .shoe-card { width: 200px; height: 280px; }
+      .colorways { flex-wrap: wrap; gap: 8px; padding: 24px 28px 36px; }
+      .colorway-dot { margin: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="bg-earth"></div>
+
+    <div class="header">
+      <p class="brand-line">Auricel &middot; Collection One</p>
+      <h1 class="title">TERRA</h1>
+      <p class="collection-label">Collection 01</p>
+    </div>
+
+    <div class="tagline">
+      <p>Five colorways.</p>
+      <p>Coming soon.</p>
+    </div>
+
+    <div class="shoes-container">
+      <div class="shoes-fan">
+        <!-- Card 1: Dune -->
+        <div class="shoe-card" data-shoe="0">
+          <div class="shoe-visual">
+            <svg viewBox="0 0 260 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Sole -->
+              <path d="M30 110 Q40 120 130 118 Q220 116 240 108 L238 100 Q220 108 130 110 Q40 112 32 102Z" fill="#8B6914"/>
+              <!-- Midsole -->
+              <path d="M32 102 Q40 112 130 110 Q220 108 238 100 L236 92 Q218 100 130 102 Q42 104 34 94Z" fill="#D4C8A0"/>
+              <!-- Upper -->
+              <path d="M34 94 Q42 104 130 102 Q218 100 236 92 L230 50 Q200 30 160 28 L100 32 Q60 38 40 60Z" fill="#C8B89A"/>
+              <!-- Collar -->
+              <path d="M40 60 Q38 52 50 44 Q65 36 100 32 L90 40 Q65 46 55 56Z" fill="#8A7B6B"/>
+              <!-- Laces -->
+              <path d="M90 40 L100 48 M100 36 L112 46 M112 34 L124 44 M124 32 L136 42 M136 30 L148 40" stroke="#E8E0D0" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Tongue -->
+              <path d="M88 42 Q92 20 120 16 Q140 14 150 20 L148 40 Q130 30 100 34Z" fill="#B8A888"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Card 2: Bark -->
+        <div class="shoe-card" data-shoe="1">
+          <div class="shoe-visual">
+            <svg viewBox="0 0 260 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M30 110 Q40 120 130 118 Q220 116 240 108 L238 100 Q220 108 130 110 Q40 112 32 102Z" fill="#8B6914"/>
+              <path d="M32 102 Q40 112 130 110 Q220 108 238 100 L236 92 Q218 100 130 102 Q42 104 34 94Z" fill="#D4C8A0"/>
+              <path d="M34 94 Q42 104 130 102 Q218 100 236 92 L230 50 Q200 30 160 28 L100 32 Q60 38 40 60Z" fill="#C0B098"/>
+              <path d="M40 60 Q38 52 50 44 Q65 36 100 32 L90 40 Q65 46 55 56Z" fill="#3A3540"/>
+              <path d="M90 40 L100 48 M100 36 L112 46 M112 34 L124 44 M124 32 L136 42 M136 30 L148 40" stroke="#E8E0D0" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M88 42 Q92 20 120 16 Q140 14 150 20 L148 40 Q130 30 100 34Z" fill="#A89880"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Card 3: Moss -->
+        <div class="shoe-card" data-shoe="2">
+          <div class="shoe-visual">
+            <svg viewBox="0 0 260 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M30 110 Q40 120 130 118 Q220 116 240 108 L238 100 Q220 108 130 110 Q40 112 32 102Z" fill="#8B6914"/>
+              <path d="M32 102 Q40 112 130 110 Q220 108 238 100 L236 92 Q218 100 130 102 Q42 104 34 94Z" fill="#D4C8A0"/>
+              <path d="M34 94 Q42 104 130 102 Q218 100 236 92 L230 50 Q200 30 160 28 L100 32 Q60 38 40 60Z" fill="#9AAE98"/>
+              <path d="M40 60 Q38 52 50 44 Q65 36 100 32 L90 40 Q65 46 55 56Z" fill="#7A8E78"/>
+              <path d="M90 40 L100 48 M100 36 L112 46 M112 34 L124 44 M124 32 L136 42 M136 30 L148 40" stroke="#E8E0D0" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M88 42 Q92 20 120 16 Q140 14 150 20 L148 40 Q130 30 100 34Z" fill="#88A086"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="shoes-shadow"></div>
+    </div>
+
+    <div class="colorways">
+      <span class="colorway-name">Dune</span>
+      <span class="colorway-dot"></span>
+      <span class="colorway-name">Bark</span>
+      <span class="colorway-dot"></span>
+      <span class="colorway-name">Chalk</span>
+      <span class="colorway-dot"></span>
+      <span class="colorway-name">Flint</span>
+      <span class="colorway-dot"></span>
+      <span class="colorway-name">Moss</span>
+    </div>
+  </div>
+
+  <script>
+    // Shoe rising animation
+    // Y offset: +60px → 0px | Ease Out | 600ms | Stagger 80ms (left → right)
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.shoe-card');
+
+      // Use IntersectionObserver so cards animate when scrolled into view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            triggerAnimation();
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.2 });
+
+      const container = document.querySelector('.shoes-container');
+      observer.observe(container);
+
+      function triggerAnimation() {
+        cards.forEach((card, i) => {
+          // Stagger: 80ms per card, leftmost first
+          setTimeout(() => {
+            card.classList.add('animate');
+          }, i * 80);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
